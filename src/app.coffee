@@ -88,7 +88,8 @@ requirejs [
     'app/base',
     'app/widgets',
     'app/control',
-    'app/router'
+    'app/router',
+    'app/operation-queue'
 ],
 (
     Models,
@@ -118,7 +119,8 @@ requirejs [
     sm,
     widgets,
     BaseControl,
-    BaseRouter
+    BaseRouter,
+    operationQueue
 ) ->
 
     LOG = debug.log
@@ -499,7 +501,9 @@ requirejs [
                 e.message = message
                 throw e
 
+        @listenTo app.vent, 'operation:cancel', _.bind(operationQueue.cancelOperation, operationQueue)
         commandInterceptor = (comm, parameters) ->
+            operationQueue.startOperation()
             appControl[comm].apply(appControl, parameters)?.done? =>
                 unless parameters[0]?.navigate == false
                     router.navigateByCommand comm, parameters

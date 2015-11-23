@@ -8,7 +8,8 @@ define [
     'app/settings',
     'app/spinner',
     'app/alphabet',
-    'app/accessibility'
+    'app/accessibility',
+    'app/operation-queue'
 ], (
     moment,
     _,
@@ -19,7 +20,8 @@ define [
     settings,
     SMSpinner,
     alphabet,
-    accessibility
+    accessibility,
+    operationQueue
 ) ->
 
     BACKEND_BASE = appSettings.service_map_backend
@@ -195,7 +197,9 @@ define [
 
             delete options.spinnerOptions
 
-            super options
+            xhr = super options
+            operationQueue.addRequest xhr
+            xhr
 
         fetchFields: (start, end, fields) ->
             # Fetches more model details for a specified range
