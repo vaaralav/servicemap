@@ -8,7 +8,8 @@ define [
     'app/map',
     'app/widgets',
     'app/jade',
-    'app/map-state-model'
+    'app/map-state-model',
+    'app/operation-queue'
 ], (
     Backbone,
     Marionette,
@@ -20,6 +21,7 @@ define [
     widgets,
     jade,
     MapStateModel,
+    operationQueue
 ) ->
 
     # TODO: remove duplicates
@@ -148,6 +150,8 @@ define [
                     @drawDivisions @divisions
 
         drawUnits: (units, options) ->
+            if operationQueue.status == 'cancelled'
+                return
             @allMarkers.clearLayers()
             if units.filters?.bbox?
                 if @_skipBboxDrawing
@@ -158,6 +162,8 @@ define [
             unless options?.keepViewport
                 @preAdapt?()
                 @map.adaptToLatLngs latLngs
+            if operationQueue.status == 'cancelled'
+                return
             @allMarkers.addLayers markers
 
         _combineMultiPolygons: (multiPolygons) ->
