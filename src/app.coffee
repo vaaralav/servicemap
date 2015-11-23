@@ -333,6 +333,10 @@ requirejs [
 
         home: ->
             @reset()
+        cancel: ->
+            @reset()
+            @services.trigger 'remove', null, @services
+            sm.resolveImmediately()
 
     app = new Marionette.Application()
 
@@ -417,6 +421,7 @@ requirejs [
                 clearSearchResults: blank
                 closeSearch: blank
                 home: blank
+                cancel: blank
 
         _getFragment: (commandString, parameters) ->
             @fragmentFunctions[commandString]?(parameters)
@@ -484,6 +489,7 @@ requirejs [
 
             "setRadiusFilter"
             "home"
+            "cancel"
 
             "composeFeedback"
             "closeFeedback"
