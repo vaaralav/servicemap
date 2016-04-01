@@ -11,6 +11,7 @@ cd servicemap
 npm install
 bower install
 npm start
+
 ```
 
 The application is now accessible via the browser at:
