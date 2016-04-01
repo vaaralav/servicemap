@@ -9,11 +9,10 @@ UI components for the Service Map of the Helsinki Metropolitan Area.
 git clone https://github.com/City-of-Helsinki/servicemap.git
 cd servicemap
 npm install
-./node_modules/.bin/grunt server
+bower install
+grunt dev
+grunt start
 ```
-
-You can also simply run `grunt server` if you have `grunt-cli`
-globally installed.
 
 The application is now accessible via the browser at:
 
