@@ -802,7 +802,7 @@ define [
         url: ->
             uri = URI "#{BACKEND_BASE}/search/"
             uri.search
-                q: @query
+                input: @query
                 language: p13n.getLanguage()
                 only: 'unit.name,service.name,unit.location,unit.root_services'
                 include: 'unit.accessibility_properties,service.ancestors,unit.services'
