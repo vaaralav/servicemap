@@ -52,6 +52,7 @@ define [
             'input input': 'adaptToQuery'
 
         search: (e) ->
+            alert("search");
             e.stopPropagation()
             unless @isEmpty()
                 @$searchEl.typeahead 'close'
@@ -127,10 +128,13 @@ define [
             @geocoderBackend.setOptions
                 $inputEl: @$searchEl
                 selectionCallback: (ev, data) ->
+                    #alert("selectionCallback");
+                    $('.search-container input').val('')
                     app.commands.execute 'selectPosition', data
         getQuery: () ->
             return $.trim @$searchEl.val()
         executeQuery: () ->
+            alert("exquery");
             @geocoderBackend.street = null
             @$searchEl.typeahead 'close'
             app.commands.execute 'search', @getInputText()
@@ -141,6 +145,7 @@ define [
             model = null
             objectType = data.object_type
             if objectType == 'address'
+                #debugger
                 return
             @$searchEl.typeahead 'val', ''
             app.commands.execute 'clearSearchResults', navigate: false
