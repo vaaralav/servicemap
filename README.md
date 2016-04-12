@@ -10,8 +10,7 @@ git clone https://github.com/City-of-Helsinki/servicemap.git
 cd servicemap
 npm install
 bower install
-grunt dev
-grunt start
+npm start
 ```
 
 The application is now accessible via the browser at:
