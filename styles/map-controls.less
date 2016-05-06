@@ -141,6 +141,17 @@
   //  }
 }
 
+@media print {
+  #navigation-header, #navigation-contents .header-item *{
+    display: none;
+  }
+  #navigation-contents .header-item .header-column-main {
+    &, & * {
+      display: block !important;
+    }
+  }
+}
+
 // Service cart
 // -----------------------------------
 
@@ -152,6 +163,13 @@
 
   @media (max-width: @screen-xs-max) {
     bottom: 10px;
+  }
+}
+
+// Top Right Controllers
+@media print {
+  #top-right-controllers {
+    display: none !important;
   }
 }
 
@@ -174,6 +192,12 @@
       color: @white;
       text-transform: capitalize;
       text-shadow: none;
+    }
+  }
+
+  @media print {
+    & {
+      display: none !important;
     }
   }
 }
@@ -215,6 +239,14 @@
     border-bottom-right-radius: @main-border-radius;
     padding-top: 4px;
     padding-right: 2px;
+  }
+}
+
+@media print {
+  .leaflet-control-container {
+    &, & *{
+      display: none !important;
+    }
   }
 }
 
@@ -428,6 +460,17 @@
     .bottom-logo {
       float: right;
       text-align: left;
+      @media print {
+        & {
+          display: none !important;
+        }
+      }
+    }
+
+    @media print {
+      & {
+        display: none !important;
+      }
     }
   }
 

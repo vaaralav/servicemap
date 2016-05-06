@@ -49,6 +49,23 @@ body {
   height: 100%;
 }
 
+@media print {
+  * {
+    float: none !important;
+  }
+  a[href]:after {
+    content: none !important;
+  }
+
+  a[role=button] {
+    display: none !important;
+  }
+
+  .icon-icon-close {
+    display: none !important;
+  }
+}
+
 
 // Screen-reader resets
 // ------------------------------
