@@ -50,9 +50,28 @@ body {
 }
 
 @media print {
-  * {
-    float: none !important;
+  body > *{
+    display: none;
   }
+
+  #map .active-area {
+    display: block;
+  }
+
+  #app-container, #map {
+    display: block;
+    width: 10cm;
+  }
+
+  #navigation-region {
+    display: block;
+    position: relative;
+  }
+
+  .leaflet-layer {
+    margin-left: -20%;
+  }
+
   a[href]:after {
     content: none !important;
   }
