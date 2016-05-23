@@ -60,10 +60,12 @@ define [
             @hiddenDivisions =
                 emergency_care_district: true
 
+            @unitList = new models.UnitList()
             @divList = new models.AdministrativeDivisionList()
             @listenTo @model, 'reverse-geocode', =>
                 @fetchDivisions().done =>
-                    @render()
+                    @fetchUnits().done =>
+                        @render()
             @divList.comparator = (a, b) =>
                 indexA = _.indexOf SORTED_DIVISIONS, a.get('type')
                 indexB = _.indexOf SORTED_DIVISIONS, b.get('type')
@@ -87,6 +89,7 @@ define [
             deferreds = []
             @rescueUnits = {}
             deferreds.push @fetchDivisions(coords)
+            deferreds.push @fetchUnits(coords)
             for serviceId in EMERGENCY_UNIT_SERVICES
                 coll = new models.UnitList()
                 @rescueUnits[serviceId] = coll
@@ -107,11 +110,21 @@ define [
                     distance: distance
                     include: "#{UNIT_INCLUDE_FIELDS},services"
         fetchDivisions: (coords) ->
+            console.log((_.union SORTED_DIVISIONS, ['emergency_care_district']).join(','))
             @divList.fetch
                 data:
                     lon: coords[0]
                     lat: coords[1]
                     unit_include: UNIT_INCLUDE_FIELDS
+                    type: (_.union SORTED_DIVISIONS, ['emergency_care_district']).join(',')
+                    geometry: 'true'
+                reset: true
+        fetchUnits: (coords) ->
+            @unitList.fetch
+                data:
+                    lon: coords[0]
+                    lat: coords[1],
+                    unit_include: UNIT_INCLUDE_FIELDS,
                     type: (_.union SORTED_DIVISIONS, ['emergency_care_district']).join(',')
                     geometry: 'true'
                 reset: true
@@ -141,10 +154,12 @@ define [
             app.getRegion('navigation').currentView.updateMaxHeights()
 
         renderAdminDivs: ->
+
             divsWithUnits = @divList.filter (x) -> x.has('unit')
+            console.log 'divList', @divList, 'divsWithUnits', divsWithUnits, 'unitList', @unitList
             emergencyDiv = @divList.find (x) ->
                 x.get('type') == 'emergency_care_district'
-            if divsWithUnits.length > 0
+            if true #divsWithUnits.length > 0
                 units = new Backbone.Collection(
                     divsWithUnits.map (x) ->
                         # Ugly hack to allow duplicate
@@ -159,6 +174,10 @@ define [
                             unitData.emergencyUnitId = emergencyDiv.getEmergencyCareUnit()
                         new Backbone.Model(unitData)
                 )
+                if @unitList.length > 0
+                    console.log "bar"
+                    @unitList.map (x) ->
+                        units.add(x)
                 @areaServices.show new UnitListView
                     collection: units
                 @areaEmergencyUnits.show new EmergencyUnitLayout
