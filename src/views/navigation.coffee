@@ -7,7 +7,8 @@ define [
     'cs!app/views/search-input',
     'cs!app/views/search-results',
     'cs!app/views/sidebar-region',
-    'cs!app/map-view'
+    'cs!app/map-view',
+    'cs!app/views/loading-indicator'
 ], (
     base,
     EventDetailsView,
@@ -18,7 +19,8 @@ define [
     {SearchLayoutView: SearchLayoutView,
     UnitListLayoutView: UnitListLayoutView},
     SidebarRegion,
-    MapView
+    MapView,
+    LoadingIndicatorView
 ) ->
 
     class NavigationLayout extends base.SMLayout
@@ -52,6 +54,7 @@ define [
             @listenTo @searchResults, 'ready', ->
                 @change 'search'
             @listenTo @serviceTreeCollection, 'finished', ->
+                console.log 'finished'
                 @openViewType = null
                 @change 'browse'
             @listenTo @selectedServices, 'reset', (coll, opts) ->
@@ -68,9 +71,20 @@ define [
                 else if @openViewType == 'position'
                     @closeContents()
             @listenTo @selectedServices, 'add', (service) ->
+                console.log 'on selectedServices add', service
                 @closeContents()
+                
+                # TODO: Add loading indicator here
+                @contents.show new LoadingIndicatorView
+                    text: i18n.t('accessibility.pending') + ' ' + i18n.t('search.type.unit.count_plural', {count: service.attributes.unit_count})
+                
+                ###@contents.show new ServiceTreeView
+                    collection: @serviceTreeCollection
+                    selectedServices: @selectedServices
+                    breadcrumbs: @breadcrumbs###
                 @service = service
                 @listenTo @service.get('units'), 'finished', =>
+                    @closeContents()
                     @change 'service-units'
             @listenTo @selectedServices, 'remove', (service, coll) =>
                 if coll.isEmpty()
@@ -132,7 +146,7 @@ define [
                     @change 'radius'
 
         change: (type, opts) ->
-
+            console.log 'navigation.change()', type, opts
             # Don't react if browse is already opened
             return if type is 'browse' and @openViewType is 'browse'
 
@@ -183,6 +197,7 @@ define [
                     @opened = false
                     view = null
                     @contents.reset()
+
 
             @updatePersonalisationButtonClass type
 

@@ -33,7 +33,7 @@
     margin-top: @sidebar-small-margin;
   }
 
-  ul.main-list.service-tree li {
+  ul.main-list.service-tree li, .loading-indicator {
     padding-top: 20px;
     padding-bottom: 19px;
   }
@@ -119,7 +119,7 @@
     }
   }
 
-  ul.main-list li, .header-item {
+  ul.main-list li, .header-item, .loading-indicator {
     position: relative;
     display: block;
     background-color: @white;
@@ -281,5 +281,25 @@
   padding: 8px 12px;
   &:hover {
     background-color: white;
+  }
+}
+
+.loading-indicator {
+  /* Loading icon on the right side of the loading text */
+  .icon-icon-loading {
+    font-size: 22px;
+    color: @gray;
+    position: absolute;
+    left: 8px;
+    top: 16px;
+  }
+  /* Close icon that stops loading on click. Right of the loading text */
+  .icon-icon-close {
+    font-size: 22px;
+    color: @gray;
+    position: absolute;
+    right: 8px;
+    top: 16px;
+
   }
 }
