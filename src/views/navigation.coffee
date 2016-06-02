@@ -107,6 +107,10 @@ define [
             @contents.on('show', @updateMaxHeights)
             $(window).resize @updateMaxHeights
             @listenTo(app.vent, 'landing-page-cleared', @setMaxHeight)
+            @listenTo app.vent, 'searching', () ->
+                @closeContents()
+                @contents.show new LoadingIndicatorView
+                    text: i18n.t('search.searching', {query: @searchResults.query})
         updateMaxHeights: =>
             @setMaxHeight()
             currentViewType = @contents.currentView?.type

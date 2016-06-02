@@ -1003,6 +1003,7 @@ tour:
         tour_ok: Okej!
 search:
     fi:
+        searching: Haetaan...
         sort_label: Järjestys
         sort:
             default: Osuvuus
@@ -1030,6 +1031,7 @@ search:
                 show_all: Näytä&nbsp;__count__&nbsp;osoite
                 show_all_plural: Näytä kaikki&nbsp;__count__&nbsp;osoitetta
     en:
+        searching: Searching...
         sort_label: Sorting
         sort:
             default: Relevance
@@ -1057,6 +1059,7 @@ search:
                 show_all_plural: Show all&nbsp;__count__&nbsp;addresses
 
     sv:
+        searching: Var god vänta...
         sort_label: Ordning
         sort:
             default: Relevans

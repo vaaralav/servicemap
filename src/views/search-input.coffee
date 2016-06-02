@@ -129,6 +129,7 @@ define [
         getQuery: () ->
             return $.trim @$searchEl.val()
         executeQuery: () ->
+            app.vent.trigger 'searching'
             @geocoderBackend.street = null
             @$searchEl.typeahead 'close'
             app.commands.execute 'search', @getInputText()
